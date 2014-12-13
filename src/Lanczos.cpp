@@ -6,7 +6,7 @@
  */
 
 #include "Lanczos.h"
-#include "../Eigen/QR"
+#include "QR"
 #include <iostream>
 #include <omp.h>
 

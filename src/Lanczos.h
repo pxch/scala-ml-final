@@ -8,10 +8,10 @@
 #ifndef LANCZOS_H_
 #define LANCZOS_H_
 
-#include "../Eigen/Sparse"
-#include "../Eigen/Dense"
+#include "Sparse"
+#include "Dense"
 
-typedef Eigen::SparseMatrix<double> SpMat;
+typedef Eigen::SparseMatrix<double, 1, long> SpMat;
 typedef Eigen::MatrixXd Mat;
 
 class Lanczos {
