@@ -11,7 +11,7 @@
 #include "Sparse"
 #include "Dense"
 
-typedef Eigen::SparseMatrix<double, 1, long> SpMat;
+typedef Eigen::SparseMatrix<double> SpMat;
 typedef Eigen::MatrixXd Mat;
 
 class Lanczos {

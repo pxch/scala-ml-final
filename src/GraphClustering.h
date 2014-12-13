@@ -17,14 +17,14 @@
 #include <Eigenvalues>
 #include "metis.h"
 
-typedef long idx_t;
+typedef int idx_t;
 
 typedef std::tuple<idx_t, idx_t, double> eigval_triple;
 bool comparator(const eigval_triple& l, const eigval_triple& r) {
     return std::get<2>(l) > std::get<2>(r);
 }
 
-typedef Eigen::SparseMatrix<double, 1, idx_t> smat_t;
+typedef Eigen::SparseMatrix<double> smat_t;
 typedef Eigen::MatrixXd dmat_t;
 typedef Eigen::Triplet<double, idx_t> triplet_t;
 typedef std::vector<triplet_t> tri_vec;
@@ -161,7 +161,7 @@ public:
 //            new_idx_map[idx] = i;
             new_idx_map[i] = idx;
         }
-
+/*
         std::ofstream out1, out2, out3;
         out1.open("part_idx_map.txt");
         out2.open("new_idx_map.txt");
@@ -171,7 +171,7 @@ public:
             out2 << new_idx_map[i] << std::endl;
             out3 << part[i] << std::endl;
         }
-
+*/
         part_tri_lists.resize(nparts);
 
         for (tri_vec::iterator tri = raw_tri_list.begin(); tri != raw_tri_list.end(); ++tri) {
@@ -192,8 +192,8 @@ public:
         for (idx_t i = 0; i < nparts; ++i) {
             part_nnz_cnt[i] = part_tri_lists[i].size();
             nnz_cnt_after += part_nnz_cnt[i];
-            std::cout << "Partition " << i+1 << ": nvtxs = " << part_vtx_cnt[i];
-            std::cout << ", nnz = " << part_nnz_cnt[i] << std::endl;
+//            std::cout << "Partition " << i+1 << ": nvtxs = " << part_vtx_cnt[i];
+//            std::cout << ", nnz = " << part_nnz_cnt[i] << std::endl;
         }
 
         std::cout << "Total number of edges after clustering:\t" << nnz_cnt_after << std::endl;
@@ -218,7 +218,7 @@ public:
         idx_t c = 2 * ceil((double)k / nparts);
 
         for (idx_t i = 0; i < nparts; ++i) {
-            std::cout << "Eigen decomposition of partition " << i << std::endl;
+//            std::cout << "Eigen decomposition of partition " << i << std::endl;
 
             Eigen::SelfAdjointEigenSolver<dmat_t> es(part_mats[i]);
             es_vec.push_back(es);
@@ -240,15 +240,9 @@ public:
 
         std::sort(top_eigvals.begin(), top_eigvals.end(), comparator);
 
-        for (idx_t i = 0; i < top_eigvals.size(); ++i) {
-            std::cout << std::get<2>(top_eigvals[i]) << std::endl;
-        }
-
         for (idx_t i = 0; i < k; ++i) {
             idx_t p_idx = std::get<0>(top_eigvals[i]);
             idx_t col_idx = std::get<1>(top_eigvals[i]);
-
-            std::cout << p_idx << "\t" << col_idx << std::endl;
 
             vec_t eigvec = es_vec[p_idx].eigenvectors().col(col_idx);
             eigvec *= (double) 1.0 / eigvec.norm();
