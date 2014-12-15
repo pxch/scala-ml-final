@@ -1,17 +1,5 @@
-CC=g++
-CFLAGS=-c -O3 -Wall -fopenmp -IEigen
+all: mseigs
 
-all: mseigs clean
-
-mseigs: main.o Lanczos.o
-	$(CC) -fopenmp main.o Lanczos.o -O3 -o mseigs
-
-main.o: src/main.cpp
-	$(CC) $(CFLAGS) src/main.cpp
-
-Lanczos.o: src/Lanczos.cpp src/Lanczos.h
-	$(CC) $(CFLAGS) src/Lanczos.cpp
-
-clean:
-	rm -rf *o
+mseigs: src/mseigs.cpp src/GraphClustering.h src/Lanczos.cpp src/Lanczos.h src/mseigs.h
+	icc -O2 -xhost -openmp -std=c++0x -IEigen -Imetis/include -Lmetis/lib -o mseigs src/mseigs.cpp src/Lanczos.cpp -lmetis
 

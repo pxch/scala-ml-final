@@ -1,10 +1,3 @@
-/*
- * Lanczos.h
- *
- *  Created on: Nov 16, 2014
- *      Author: xun
- */
-
 #ifndef LANCZOS_H_
 #define LANCZOS_H_
 
@@ -16,7 +9,7 @@ typedef Eigen::MatrixXd Mat;
 
 class Lanczos {
 public:
-	Lanczos(SpMat& A, int k, Mat& V0);
+	Lanczos(SpMat& A, int k, Mat& V0, bool flag);
 	bool validPairs(SpMat& A);
 
 	Mat eigenValues() {
